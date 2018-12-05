@@ -13,11 +13,11 @@
 
 typedef struct order Order;
 struct order {
-    time_t	 systime;
-    char	 name[MAX_STRING_LEN];
-    char	 email[MAX_STRING_LEN];
-    int		 phonenumber;
-    int		 size;    
+    time_t   systime;
+    char   name[MAX_STRING_LEN];
+    char   email[MAX_STRING_LEN];
+    int    phonenumber;
+    int    size;    
 };
 
 
@@ -103,7 +103,7 @@ void getNewOrder(struct order *current){
       printf("Mentve\n \n");
    } else {
       printf("Add meg újra! \n");
-      getNewOrder(current);	
+      getNewOrder(current); 
    }
 }
 
@@ -219,11 +219,11 @@ void modificator(struct order *current){
     FILE * newfile=fopen("db.txt", "w+");
     idx=0;
     if(newfile != NULL){
-    	for(idx=0; idx<size; ++idx){
-    	        //printf("id: %i", idx);
-    	        //checkValues(&arr_order[idx]);
-        	fwrite(&arr_order[idx], sizeof(struct order), 1, newfile);
-	}
+      for(idx=0; idx<size; ++idx){
+              //printf("id: %i", idx);
+              //checkValues(&arr_order[idx]);
+          fwrite(&arr_order[idx], sizeof(struct order), 1, newfile);
+  }
     }
     fclose(newfile);
     getNewOrder(current);
@@ -268,11 +268,11 @@ void deleteOrder(struct order *current){
     fseek(file,0, SEEK_SET);
     idx=0;
     if(newfile != NULL){
-    	for(idx=0; idx<size; ++idx){
-        	fwrite(&arr_order[idx], sizeof(struct order), 1, newfile);
-        	//printf("id: %i", idx);
-        	//checkValues(&arr_order[idx]);
-	    }
+      for(idx=0; idx<size; ++idx){
+          fwrite(&arr_order[idx], sizeof(struct order), 1, newfile);
+          //printf("id: %i", idx);
+          //checkValues(&arr_order[idx]);
+      }
     }
     fclose(newfile);
     printf("Módosítások mentve\n");
@@ -293,8 +293,8 @@ int kuld( int uzenetsor, int szuloVGyerek )
      int status; 
      
      status = msgsnd( uzenetsor, &uz, strlen ( uz.mtext ) + 1 , 0 ); //üzenet küldése //msgsnd( uzenetsor neve, &amibe, memóriaszelet mérete /*fix méret kell!*/, IPC_NOWAIT constans /*nincs várakozás*/ );
-	     // a 3. param ilyen is lehet: sizeof(uz.mtext)
-     	// a 4. parameter gyakran IPC_NOWAIT, ez a 0-val azonos
+       // a 3. param ilyen is lehet: sizeof(uz.mtext)
+      // a 4. parameter gyakran IPC_NOWAIT, ez a 0-val azonos
      if ( status < 0 ) 
           perror("msgsnd"); 
      return 0; 
@@ -305,41 +305,41 @@ int kuld( int uzenetsor, int szuloVGyerek )
 struct order currentJob[2]; // current jobs
 int nrOfJobs = 1;           // how many are of them
 void optimize(struct order *current){ 
-	struct order *tmp_oldest=malloc(sizeof(struct order));
-	struct order *tmp_fst = malloc(sizeof(struct order));
-	struct order *tmp_snd = malloc(sizeof(struct order));
+  struct order *tmp_oldest=malloc(sizeof(struct order));
+  struct order *tmp_fst = malloc(sizeof(struct order));
+  struct order *tmp_snd = malloc(sizeof(struct order));
 
 
-	int idx = 0;
-	struct order *obj=malloc(sizeof(struct order));
+  int idx = 0;
+  struct order *obj=malloc(sizeof(struct order));
     FILE * file = fopen("db.txt","rb");
     fseek(file, 0, SEEK_SET);
   //get the oldest value  
-	printf("name \t email \t phonenumber \t size \t systime\n");
+  printf("name \t email \t phonenumber \t size \t systime\n");
   while(fread(obj, sizeof(struct order), 1, file)){  
-	  printf("%s \t %s \t %d \t %d \t %ld\n", obj->name, obj->email, obj->phonenumber, obj->size, obj->systime);
-		if(idx == 0)
-		{//fst
-			strcpy(tmp_oldest->name, obj->name);
-			strcpy(tmp_oldest->email, obj->email);
-			tmp_oldest->phonenumber = obj->phonenumber; 
-			tmp_oldest->size = obj->size;
-			tmp_oldest->systime = obj->systime;
-			++idx;
-		 //get the current value
-
-		}else
-		{//other
-			if (tmp_oldest->systime > obj->systime)
-			{//if current is older then the oldest then set it as oldest
-				strcpy(tmp_oldest->name, obj->name);
-        strcpy(tmp_oldest->email, obj->email);
-				tmp_oldest->phonenumber = obj->phonenumber; 
-				tmp_oldest->size = obj->size;
-				tmp_oldest->systime = obj->systime;
-			}
+    printf("%s \t %s \t %d \t %d \t %ld\n", obj->name, obj->email, obj->phonenumber, obj->size, obj->systime);
+    if(idx == 0)
+    {//fst
+      strcpy(tmp_oldest->name, obj->name);
+      strcpy(tmp_oldest->email, obj->email);
+      tmp_oldest->phonenumber = obj->phonenumber; 
+      tmp_oldest->size = obj->size;
+      tmp_oldest->systime = obj->systime;
       ++idx;
-		}
+     //get the current value
+
+    }else
+    {//other
+      if (tmp_oldest->systime > obj->systime)
+      {//if current is older then the oldest then set it as oldest
+        strcpy(tmp_oldest->name, obj->name);
+        strcpy(tmp_oldest->email, obj->email);
+        tmp_oldest->phonenumber = obj->phonenumber; 
+        tmp_oldest->size = obj->size;
+        tmp_oldest->systime = obj->systime;
+      }
+      ++idx;
+    }
   }
   printf("Legregebbi:\n");
   checkValues(tmp_oldest);
@@ -459,9 +459,9 @@ void optimize(struct order *current){
      struct uzenet uz; 
      int status; 
      // az utolso parameter(0) az uzenet azonositoszama
-	// ha az 0, akkor a sor elso uzenetet vesszuk ki
-	// ha >0 (5), akkor az 5-os uzenetekbol a kovetkezot
-	// vesszuk ki a sorbol 
+  // ha az 0, akkor a sor elso uzenetet vesszuk ki
+  // ha >0 (5), akkor az 5-os uzenetekbol a kovetkezot
+  // vesszuk ki a sorbol 
      status = msgrcv(uzenetsor, &uz, 1024, 5, 0 ); //msgrcv(mit, &hova, memóriaszelet, melyik típusú üzenetet az üzenetsorból //3-mtype mező
      , 0. elem );
      
@@ -475,14 +475,14 @@ void optimize(struct order *current){
 int main(k)
 {
     printf("Fenyes Nap Kft \n Jellemzően egy évre vonatkoztatva 1000KW/h energiát 1KW teljesítményt nyujtó 4 darab napelem panel \n \n");
-    struct order current; 	//struct init
+    struct order current;   //struct init
 //    current = malloc(sizof(*current));
 
    int option = 1;
    while(option != 0){
         printf("~ FENYES NAP ~ \n 0 kilépés \n 1 új felvétele \n 2 kilistázás \n 3 ügyfél módosítás \n 4 ügyfél törlése \n \n 5 optimize \nválasztás: ");
-   	scanf(" %i", &option);	
-   	if(option == 1){getNewOrder(&current);}
+    scanf(" %i", &option);  
+    if(option == 1){getNewOrder(&current);}
         if(option == 2){dbList(&current);}
         if(option == 3){modificator(&current);}
         if(option == 4){deleteOrder(&current);}
