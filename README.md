@@ -1,5 +1,7 @@
 # Info
-egy jó leírás, elmélet + gyakorlati: https://github.com/angrave/SystemProgramming/wiki
+Egy jó leírás, elmélet + gyakorlati: https://github.com/angrave/SystemProgramming/wiki
+> **Ez csak egy összefoglaló!**
+Futó processek megtekintése: `top -U [username]` . Bővebben: https://unix.stackexchange.com/questions/85466/how-to-see-process-created-by-specific-user-in-unix-linux 
 
 # Szülő-gyerek kapcsolatok
 A szülő-gyerek kapcsolatban azt, hogy melyik fut le hamarabb azt egy `wait` szabályozza, így eben az esetben a szülő:
@@ -45,7 +47,7 @@ int main(){
 ````
 > Egy fork, egy gyerek!
 
-# Csövek
+# Csövek (pipe)
 ## Névtelen cső
 
 Csövet a 
@@ -178,3 +180,58 @@ int main() {
 }
 ````
 
+## Nevesített csövek (névcső)
+
+# Jelzés (signal)
+
+Ebben a példában **egy szülő** és **egy gyerek** van ahol a **gyerek küld** signalt.
+
+````C
+#include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
+
+void handler(int signumber){
+  printf("Signal with number %i has arrived\n",signumber);
+}
+
+int main(){
+
+  sigset_t sigset;
+  sigemptyset(&sigset); //empty signal set
+  sigaddset(&sigset,SIGTERM); //SIGTERM is in set
+  //sigfillset(&sigset); //each signal is in the set
+  sigprocmask(SIG_BLOCK,&sigset,NULL); //signals in sigset will be blocked
+               //parameters, how: SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK -   ;
+               //2. parameter changes the signalset to this if it is not NULL,
+               //3.parameter if it is not NULL, the formerly used set is stored here
+    
+  signal(SIGTERM,handler); //signal and handler is connetcted
+  //signal(SIGUSR1,handler); 
+
+  pid_t child=fork();
+  if (child>0)
+  {
+      wait();
+      printf("Szülő vagyok signalt várok\n");
+
+      sigprocmask(SIG_UNBLOCK,&sigset,NULL); //ha az unblock kimarad akkor nem biztosított a megérkezés sorrendje! 
+      int status;
+      wait(&status);
+      printf("Parent process ended\n");
+  }
+  else
+  {
+    printf("Gyerek vagyok.\n");
+    printf("Waits 2 seconds, then send a SIGTERM %i signal (it is blocked)\n",SIGTERM);
+    sleep(2);
+    kill(getppid(),SIGTERM);
+  }
+  return 0;
+}
+````
+
+> **!** A `sigprocmask`-nak fontos szerepe van, ugyanis ha kihagyjuk akkor *szabályozhatatlanná válik a sorrend*, itt pl a ` printf("Szülő vagyok signalt várok\n");` hamarabb *futhat* le abban az esetben!
+
+> Signalok esetében a *handler*ben `printf`et használni nem egéyszéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html 
