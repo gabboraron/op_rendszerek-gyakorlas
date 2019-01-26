@@ -185,6 +185,7 @@ int main() {
 # Jelzés (signal)
 
 Ebben a példában **egy szülő** és **egy gyerek** van ahol a **gyerek küld** signalt.
+> fájl: SIGNAL_egy_szulo_egy_gyerek_gyerek_signalt_küld.c
 
 ````C
 #include <stdlib.h>
@@ -236,9 +237,57 @@ int main(){
 
 > Signalok esetében a *handler*ben `printf`et használni nem egéyszéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html 
 
-**A `signal()`-t a `fork()` előtt kell meghívni, vagy mindenképp gondoskodni kell a szikronizációról!**
+**A `signal()`-t a `fork()` előtt kell meghívni, vagy mindenképp gondoskodni kell a szinkronizációról!**
 > A szinkronizációról pl így lehet gondoskodni: http://www.code2learn.com/2011/01/signal-program-using-parent-child.html vagy így: https://stackoverflow.com/a/31102010
 
+> **Figyelem!** Ezekben az esetekben a `return code`okat is figyelni kell, ugyanis azok a függvények és eljárások amik természetes esetben nem hasalhatnak el, ilyen esetekben elhasalhatnak, ha kigofynak pl memóriából, ilyen pl a `fork()` is!
 
+Az alábbi példában egy **szülő küld** a **gyereknek** jelzést:
+> fájl: SIGNAL_egy_szulo_egy_gyerek_szulo_signalt_kuld.c
+> stackowerflow: https://stackoverflow.com/a/54374945/10438341
+````C
+#include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
 
+void handler(int signumber){
+  printf("Signal with number %i has arrived\n",signumber);
+}
 
+int main(){
+
+  sigset_t sigset;
+  sigemptyset(&sigset); //empty signal set
+  sigaddset(&sigset,SIGTERM); //SIGTERM is in set
+  //sigfillset(&sigset); //each signal is in the set
+  sigprocmask(SIG_BLOCK,&sigset,NULL); //signals in sigset will be blocked
+               //parameters, how: SIG_BLOCK, SIG_UNBLOCK, SIG_SETMASK -   ;
+               //2. parameter changes the signalset to this if it is not NULL,
+               //3.parameter if it is not NULL, the formerly used set is stored here
+    
+  signal(SIGTERM,handler); //signal and handler is connetcted
+  //signal(SIGUSR1,handler); 
+
+  pid_t child=fork();
+  if(0>child) return EXIT_FAILURE;
+  if (child>0) {
+    int status;
+    printf("I'm the parent\n");
+    printf("Waits 2 seconds, then send a SIGTERM %i signal (it is blocked)\n",SIGTERM);
+    sleep(2);
+    kill(child,SIGTERM);
+    printf("I sent it.\n");
+  }
+  else
+  {
+    sigemptyset(&sigset); //the child has a different addr-space
+                          //so this won't affect the parent
+    printf("I'm the child waiting for signal.\n");
+    sigsuspend(&sigset);
+    printf("Child process ended\n");
+
+  }
+  return 0;
+}
+````
