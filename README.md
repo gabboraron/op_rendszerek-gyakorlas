@@ -373,7 +373,7 @@ int main(){
 
 > A `sigprocmask`-nak fontos szerepe van, ugyanis ha kihagyjuk akkor *szabályozhatatlanná válik a sorrend*, itt pl a ` printf("Szülő vagyok signalt várok\n");` hamarabb *futhat* le abban az esetben!
 
-> Signalok esetében a *handler*ben `printf`et használni nem egészéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html Vagy megoldhatjuk így:
+> Signalok esetében a *handler*ben `printf`et használni nem egészéges! Bővebben stackoverflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html Vagy megoldhatjuk így:
 
 >fájl: SIGNAL_egy_szulo_egy_gyerek_szulo_signalt_kuld-biztonsagos_handler.c
 ````C
@@ -395,7 +395,7 @@ void handler(int signumber)
 Az alábbi példában egy **szülő küld** a **gyereknek** jelzést:
 > fájl: SIGNAL_egy_szulo_egy_gyerek_szulo_signalt_kuld.c
 
-> stackowerflow: https://stackoverflow.com/a/54374945/10438341
+> stackoverflow: https://stackoverflow.com/a/54374945/10438341
 ````C
 #include <stdlib.h>
 #include <stdio.h>
