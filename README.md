@@ -235,7 +235,14 @@ int main(){
 
 > A `sigprocmask`-nak fontos szerepe van, ugyanis ha kihagyjuk akkor *szabályozhatatlanná válik a sorrend*, itt pl a ` printf("Szülő vagyok signalt várok\n");` hamarabb *futhat* le abban az esetben!
 
-> Signalok esetében a *handler*ben `printf`et használni nem egéyszéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html 
+> Signalok esetében a *handler*ben `printf`et használni nem egészéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html Vagy megoldhatjuk így: 
+````C
+#define WRITE(Str) (void)write(1,Str,strlen(Str))
+void handler(int signumber)
+{
+    WRITE("Signal arrived\n");
+}
+````
 
 **A `signal()`-t a `fork()` előtt kell meghívni, vagy mindenképp gondoskodni kell a szinkronizációról!**
 > A szinkronizációról pl így lehet gondoskodni: http://www.code2learn.com/2011/01/signal-program-using-parent-child.html vagy így: https://stackoverflow.com/a/31102010
@@ -244,6 +251,7 @@ int main(){
 
 Az alábbi példában egy **szülő küld** a **gyereknek** jelzést:
 > fájl: SIGNAL_egy_szulo_egy_gyerek_szulo_signalt_kuld.c
+
 > stackowerflow: https://stackoverflow.com/a/54374945/10438341
 ````C
 #include <stdlib.h>
