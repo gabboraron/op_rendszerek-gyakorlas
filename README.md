@@ -237,6 +237,9 @@ int main(){
 
 > Signalok esetében a *handler*ben `printf`et használni nem egészéges! Bővebben stackowerflown: https://stackoverflow.com/a/16507805 vagy https://stackoverflow.com/a/9547988 vagy a dokumentációban: http://man7.org/linux/man-pages/man7/signal.7.html Vagy megoldhatjuk így: 
 ````C
+#include <unistd.h>
+#include <string.h>
+
 #define WRITE(Str) (void)write(1,Str,strlen(Str))
 void handler(int signumber)
 {
