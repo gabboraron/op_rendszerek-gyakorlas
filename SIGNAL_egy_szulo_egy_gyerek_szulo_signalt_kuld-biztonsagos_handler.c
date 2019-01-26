@@ -2,9 +2,13 @@
 #include <stdio.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
 
-void handler(int signumber){
-  printf("Signal with number %i has arrived\n",signumber);
+#define WRITE(Str) (void)write(1,Str,strlen(Str))
+void handler(int signumber)
+{
+    WRITE("Signal arrived\n");
 }
 
 int main(){
