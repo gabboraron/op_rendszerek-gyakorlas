@@ -319,7 +319,8 @@ int main(int argc, char* argv[])
 }
 ````
 
----
+-------
+
 # Jelzés (signal)
 
 Ebben a példában **egy szülő** és **egy gyerek** van ahol a **gyerek küld** signalt.
@@ -442,3 +443,5 @@ int main(){
   return 0;
 }
 ````
+# Osztott memória
+# Üzenetsor
