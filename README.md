@@ -597,7 +597,7 @@ if ( uzenetsor < 0 ) {
 } 
 ````
 
-A `kuld( uzenetsor );` és után **fontos a sgyereke megvárni!** `wait( NULL );`
+A `kuld( uzenetsor );` után **fontos a gyereket megvárni!** `wait( NULL );`
 A fogadás egyszerűen a `fogad( uzenetsor );`-al történik.
 
 Teljes kód, ahol a **szülő ír** egy **üzenetsort** a **gyerek** pedig **olvassa** azt.
