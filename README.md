@@ -736,7 +736,7 @@ semctl(semid,0,IPC_RMID);
 
 
 Teljes kód:
-> fájl: szemafor.c
+> fájl: SZEMAFOR.c
 ````C
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -819,3 +819,6 @@ int main (int argc,char* argv[]) {
    return 0;
 }
 ````
+
+Természetesen fordítva is működik.
+> fájl: SZEMAFOR-gyerek_indit.c
