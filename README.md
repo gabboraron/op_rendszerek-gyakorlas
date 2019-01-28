@@ -394,6 +394,7 @@ void handler(int signumber)
 > **Figyelem!** Ezekben az esetekben a `return code`okat is figyelni kell, ugyanis azok a függvények és eljárások amik természetes esetben nem hasalhatnak el, ilyen esetekben elhasalhatnak, ha kigofynak pl memóriából, ilyen pl a `fork()` is!
 
 Az alábbi példában egy **szülő küld** a **gyereknek** jelzést:
+A jelzést `sigsuspend(&sigset);` vel várjuk be, mert a `sleep`, `paue` vagy `wait` az nem garantálja, hogy a jelzésre várunk. Pl: *`wait`-tel a szülő megvárja a gyerek teljes lefutását, nem csak a jelzést, így ha mást is végezne a gyerek, a jelzés után, a szülő azt is megvárná!*
 > fájl: SIGNAL_egy_szulo_egy_gyerek_szulo_signalt_kuld.c
 
 > stackoverflow: https://stackoverflow.com/a/54374945/10438341
