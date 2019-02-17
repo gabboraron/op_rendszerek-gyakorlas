@@ -4,7 +4,7 @@ Egy jó leírás, elmélet + gyakorlati: https://github.com/angrave/SystemProgra
 Futó processek megtekintése: `top -U [username]` . Bővebben: https://unix.stackexchange.com/questions/85466/how-to-see-process-created-by-specific-user-in-unix-linux 
 
 # Szülő-gyerek kapcsolatok
-A szülő-gyerek kapcsolatban azt, hogy melyik fut le hamarabb azt egy `wait` szabályozza, így eben az esetben a szülő:
+A szülő-gyerek kapcsolatban azt, hogy melyik fut le hamarabb azt egy `wait` szabályozza, így ebben az esetben a szülő:
 ```` C
 #include <stdlib.h>
 #include <stdio.h>
